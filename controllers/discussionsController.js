@@ -89,7 +89,7 @@ module.exports = {
    * SINGLE record / 단일 레코드
    * ------------------------------------
    */
-  // 6. show: 액션,Discussion.findById(req.params.id)
+  // 6. show: 액션,
   show: (req, res, next) => {
     let discussionId = req.params.id;
     Discussion.findById(req.params.id) // ID로 사용자 찾기
