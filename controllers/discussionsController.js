@@ -24,22 +24,22 @@ module.exports = {
       page: "new-discussion",
       title: "New Discussion",
     });
-  // 2. create: 액션,
 },
-create: (req, res, next) => {
-  let discussionParams = getDiscussionParams(req.body, req.user);
-  // 폼 파라미터로 사용자 생성
-  Discussion.create(discussionParams)
-    .then((discussion) => {
-      res.locals.redirect = "/discussions";
-      res.locals.discussion = discussion;
-      next();
-    })
-    .catch((error) => {
-      console.log(`Error saving discussion: ${error.message}`);
-      next(error);
-    });
-},
+// 2. create: 액션,
+  create: (req, res, next) => {
+    let discussionParams = getDiscussionParams(req.body, req.user);
+    // 폼 파라미터로 사용자 생성
+    Discussion.create(discussionParams)
+      .then((discussion) => {
+        res.locals.redirect = "/discussions";
+        res.locals.discussion = discussion;
+        next();
+      })
+      .catch((error) => {
+        console.log(`Error saving discussion: ${error.message}`);
+        next(error);
+      });
+  },
   // 3. redirectView: 액션,
   redirectView: (req, res, next) => {
     let redirectPath = res.locals.redirect;
@@ -76,7 +76,7 @@ create: (req, res, next) => {
   // 5. indexView: 엑션,
   indexView: (req, res) => {
     if (req.query.format === "json") {
-      res.json(res.locals.discussions); // res.locals.users 대신 res.locals.discussions로 변경
+      res.json(res.locals.users); // res.locals.users 대신 res.locals.discussions로 변경
     } else {
       res.render("discussions/index", {
         page: "discussions",
@@ -91,6 +91,7 @@ create: (req, res, next) => {
    */
   // 6. show: 액션,Discussion.findById(req.params.id)
   show: (req, res, next) => {
+    let discussionId = req.params.id;
     Discussion.findById(req.params.id) // ID로 사용자 찾기
       .populate("author")
       .populate("comments")
