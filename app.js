@@ -102,9 +102,9 @@ const mongoose = require("mongoose"), // mongoose를 요청
   dbName = "ut-nodejs";
 
 // 데이터베이스 연결 설정
-mongoose.connect(`mongodb://127.0.0.1:27017/${dbName}`, {
-  useNewUrlParser: true,
-});
+mongoose.connect(
+  "mongodb+srv://ut-node:1234@ut-node.0oy3l1r.mongodb.net/?retryWrites=true&w=majority&appName=UT-Node",
+);
 
 // 연결되면 메시지를 보냄
 const db = mongoose.connection;
@@ -118,7 +118,7 @@ db.once("open", () => {
  * =====================================================================
  */
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3002);
 
 // ejs 레이아웃 렌더링
 app.set("view engine", "ejs"); // ejs를 사용하기 위한 애플리케이션 세팅
@@ -195,12 +195,31 @@ router.delete(
  * =====================================================================
  */
 // 1. index 라우트 생성 (모든 레코드 보기) = GET /discussions,                index 액션, index 뷰
+router.get("/discussions", discussionsController.index, discussionsController.indexView);
 // 2. 생성 폼을 보기 위한 요청 처리        = GET /discussions/new,            new 액션
+router.get("/discussions/new", discussionsController.new);
 // 3. 생성 데이터의 처리와 결과            = POST /discussions/create,        create 액션, redirectView 뷰
+router.post(
+  "/discussions/create",
+  discussionsController.create,
+  discussionsController.redirectView
+);
 // 4. show를 처리하기 위한 라우트          = GET /discussions/:id,            show 액션, showView 뷰
+router.get("/discussions/:id", discussionsController.show, discussionsController.showView);
 // 5. edit를 처리하기 위한 라우트          = GET /discussions/:id/edit,       edit 액션
+router.get("/discussions/:id/edit", discussionsController.edit);
 // 6. 편집 데이터의 처리와 결과            = PUT /discussions/:id/update,     update 액션, redirectView 뷰
+router.put(
+  "/discussions/:id/update",
+  discussionsController.update,
+  discussionsController.redirectView
+);
 // 7. 삭제를 처리하기 위한 라우트          = DELETE /discussions/:id/delete,  delete 액션, redirectView 뷰
+router.delete(
+  "/discussions/:id/delete",
+  discussionsController.delete,
+  discussionsController.redirectView
+);
 
 /**
  * Comments
